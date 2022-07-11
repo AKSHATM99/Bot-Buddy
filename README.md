@@ -11,11 +11,11 @@
 ###
 
 ## Speech Recognition-
-### ** For Speech Recognition , We are using ## Google Speech Recognizer & gTTS module .
+###  For Speech Recognition , We are using  Google Speech Recognizer & gTTS module .
 
 ## Object Detection-
-### ** YOLOv3 is used for this purpose. For names we are using coco.names file
-### ** OpenCV library is used for computer vision.**###
+###  YOLOv3 is used for this purpose. For names we are using coco.names file
+###  OpenCV library is used for computer vision.**###
 
 ## Tools Used-
 1. Yolov3
