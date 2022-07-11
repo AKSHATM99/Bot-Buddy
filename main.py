@@ -13,13 +13,11 @@ import requests
 import signal
 from subprocess import *
 
-
 class person:
     name = ''
 
     def setName(self, name):
         self.name = name
-
 
 class asis:
     name = ''
@@ -27,22 +25,17 @@ class asis:
     def setName(self, name):
         self.name = name
 
-
-
 def there_exists(terms):
     for term in terms:
         if term in voice_data:
             return True
-
 
 def engine_speak(text):
     text = str(text)
     engine.say(text)
     engine.runAndWait()
 
-
 r = sr.Recognizer()  # initialise a recogniser
-
 
 # listen for audio and convert it to text:
 def record_audio(ask=""):
@@ -61,7 +54,6 @@ def record_audio(ask=""):
         print(">>", voice_data.lower())  # print what user said
         return voice_data.lower()
 
-
 # get string and make a audio file to be played
 def engine_speak(audio_string):
     audio_string = str(audio_string)
@@ -72,7 +64,6 @@ def engine_speak(audio_string):
     playsound.playsound(audio_file)  # play the audio file
     print(asis_obj.name + ":", audio_string)  # print what app said
     os.remove(audio_file)  # remove audio file
-
 
 def respond(voice_data):
     # 1: greeting
@@ -108,18 +99,7 @@ def respond(voice_data):
     if there_exists(["how are you", "how are you doing"]):
         engine_speak("I'm very well, thanks for asking " + person_obj.name)
 
-    # 4: time
-    if there_exists(["what's the time", "tell me the time", "what time is it", "what is the time"]):
-        time = ctime().split(" ")[3].split(":")[0:2]
-        if time[0] == "00":
-            hours = '12'
-        else:
-            hours = time[0]
-        minutes = time[1]
-        time = hours + " hours and " + minutes + "minutes"
-        engine_speak(time)
-
-    # 5: search google
+    # 4: search google
     if there_exists(["search for"]) and 'youtube' not in voice_data:
         search_term = voice_data.split("for")[-1]
         url = "https://google.com/search?q=" + search_term
@@ -132,7 +112,7 @@ def respond(voice_data):
         webbrowser.get().open(url)
         engine_speak("Here is what I found for" + search_term + "on google")
 
-    # 6: search youtube
+    # 5: search youtube
     if there_exists(["youtube"]):
         search_term = voice_data.split("for")[-1]
         search_term = search_term.replace("on youtube", "").replace("search", "")
@@ -140,54 +120,14 @@ def respond(voice_data):
         webbrowser.get().open(url)
         engine_speak("Here is what I found for " + search_term + "on youtube")
 
-    # 7: get stock price
-    if there_exists(["price of"]):
-        search_term = voice_data.split("for")[-1]
-        url = "https://google.com/search?q=" + search_term
-        webbrowser.get().open(url)
-        engine_speak("Here is what I found for " + search_term + " on google")
-
-    # 9 weather
+    # 6: weather
     if there_exists(["weather"]):
         search_term = voice_data.split("for")[-1]
         url = "https://www.google.com/search?sxsrf=ACYBGNSQwMLDByBwdVFIUCbQqya-ET7AAA%3A1578847393212&ei=oUwbXtbXDN-C4-EP-5u82AE&q=weather&oq=weather&gs_l=psy-ab.3..35i39i285i70i256j0i67l4j0i131i67j0i131j0i67l2j0.1630.4591..5475...1.2..2.322.1659.9j5j0j1......0....1..gws-wiz.....10..0i71j35i39j35i362i39._5eSPD47bv8&ved=0ahUKEwiWrJvwwP7mAhVfwTgGHfsNDxsQ4dUDCAs&uact=5"
         webbrowser.get().open(url)
         engine_speak("Here is what I found for on google")
 
-    # 10 stone paper scisorrs
-    if there_exists(["game"]):
-        voice_data = record_audio("choose among rock paper or scissor")
-        moves = ["rock", "paper", "scissor"]
-
-        cmove = random.choice(moves)
-        pmove = voice_data
-
-        engine_speak("The computer chose " + cmove)
-        engine_speak("You chose " + pmove)
-        # engine_speak("hi")
-        if pmove == cmove:
-            engine_speak("the match is draw")
-        elif pmove == "rock" and cmove == "scissor":
-            engine_speak("Player wins")
-        elif pmove == "rock" and cmove == "paper":
-            engine_speak("Computer wins")
-        elif pmove == "paper" and cmove == "rock":
-            engine_speak("Player wins")
-        elif pmove == "paper" and cmove == "scissor":
-            engine_speak("Computer wins")
-        elif pmove == "scissor" and cmove == "paper":
-            engine_speak("Player wins")
-        elif pmove == "scissor" and cmove == "rock":
-            engine_speak("Computer wins")
-
-    # 11 toss a coin
-    if there_exists(["toss", "flip", "coin"]):
-        moves = ["head", "tails"]
-        cmove = random.choice(moves)
-        engine_speak("The computer chose " + cmove)
-
-
-    # 14 to search wikipedia for definition
+    # 7: to search wikipedia for definition
     if there_exists(["definition of"]):
         definition = record_audio("what do you need the definition of")
         url = urllib.request.urlopen('https://en.wikipedia.org/wiki/' + definition)
@@ -209,19 +149,7 @@ def respond(voice_data):
         engine_speak("Good bye sir have a nice day")
         exit()
 
-    # Current city or region
-    if there_exists(["where am i"]):
-        Ip_info = requests.get('https://api.ipdata.co?api-key=test').json()
-        loc = Ip_info['region']
-        engine_speak(f"You must be somewhere in {loc}")
-
-        # Current location as per Google maps
-    if there_exists(["what is my exact location"]):
-        url = "https://www.google.com/maps/search/Where+am+I+?/"
-        webbrowser.get().open(url)
-        engine_speak("You must be somewhere near here, as per Google maps")
-
-    # Object Detection module working in diffrent thread
+    # 8: Object Detection module working in diffrent thread
     if there_exists(['open','open object detection program']):
         engine_speak("opening object detection program")
 
@@ -229,22 +157,18 @@ def respond(voice_data):
         global pid
         pid = process.pid
 
-    # closing object detection
+    # 9:closing object detection
 
     if there_exists(['close', 'close object detection program', 'close this program']):
         engine_speak("closing object detection program")
         os.kill(int(pid), signal.SIGTERM)
 
-
-
 time.sleep(1)
-
 person_obj = person()
 asis_obj = asis()
-asis_obj.name = 'kiki'
+asis_obj.name = 'Bot Buddy'
 person_obj.name = ""
 engine = pyttsx3.init()
-
 while (1):
     voice_data = record_audio("")  # get the voice input
     print("Done")
